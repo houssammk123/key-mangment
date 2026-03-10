@@ -28,7 +28,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-950">
       <div className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Spotify Gold" className="h-16 w-auto mx-auto mb-2" />
+          <img src="/logo.png" alt="Spotify Gold" className="h-24 w-auto mx-auto mb-2" />
           <p className="text-gray-400 mt-2">Admin Login</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
