@@ -120,9 +120,14 @@ const RedeemPage = () => {
 
           <div className="mt-6 pt-6 border-t border-gray-700 text-center">
             <p className="text-gray-500 text-sm mb-3">Don't have a key?</p>
-            <button className="px-6 py-2 border border-green-600 text-green-400 rounded-lg hover:bg-green-600 hover:text-white transition text-sm font-medium">
+            <a
+              href="https://spotifygold.mysellauth.com/product/lft-spotify-key-upgrade"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-2 border border-green-600 text-green-400 rounded-lg hover:bg-green-600 hover:text-white transition text-sm font-medium"
+            >
               Purchase Key
-            </button>
+            </a>
           </div>
         </div>
       </div>
