@@ -37,7 +37,7 @@ const RedeemPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Spotify Gold" className="h-24 w-auto mx-auto mb-2" />
+          <img src="/logo.png" alt="Spotify Gold" className="h-36 w-auto mx-auto mb-2" />
           <p className="text-xl text-gray-400">Premium Upgrade</p>
         </div>
 

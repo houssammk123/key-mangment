@@ -30,7 +30,7 @@ const Sidebar = () => {
   return (
     <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col">
       <div className="p-6 border-b border-gray-700">
-        <img src="/logo.png" alt="Spotify Gold" className="h-16 w-auto" />
+        <img src="/logo.png" alt="Spotify Gold" className="h-20 w-auto" />
         <p className="text-xs text-gray-400 mt-1">Admin Panel</p>
       </div>
 
