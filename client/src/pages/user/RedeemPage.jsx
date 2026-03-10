@@ -37,14 +37,14 @@ const RedeemPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-green-400 mb-2">Spotify Gold</h1>
+          <h1 className="text-4xl font-bold text-gold-400 mb-2">Spotify Gold</h1>
           <p className="text-xl text-gray-400">Premium Upgrade</p>
         </div>
 
         <div className="bg-gray-800/80 backdrop-blur rounded-2xl p-8 border border-gray-700 shadow-2xl">
           {success ? (
             <div className="text-center py-6">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gold-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -57,7 +57,7 @@ const RedeemPage = () => {
                     href={inviteLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition text-lg text-center"
+                    className="inline-block w-full py-3 bg-gold-600 hover:bg-gold-700 text-white font-bold rounded-lg transition text-lg text-center"
                   >
                     Accept Spotify Invitation
                   </a>
@@ -81,7 +81,7 @@ const RedeemPage = () => {
                   value={keyCode}
                   onChange={(e) => setKeyCode(e.target.value)}
                   placeholder="SpotifyGold-XXXX-XXXX"
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition"
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -92,7 +92,7 @@ const RedeemPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition"
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition"
                   required
                 />
               </div>
@@ -105,13 +105,13 @@ const RedeemPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Create a password"
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition"
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition disabled:opacity-50 text-lg"
+                className="w-full py-3 bg-gold-600 hover:bg-gold-700 text-white font-bold rounded-lg transition disabled:opacity-50 text-lg"
               >
                 {loading ? 'Processing...' : 'Upgrade Now'}
               </button>
@@ -124,7 +124,7 @@ const RedeemPage = () => {
               href="https://spotifygold.mysellauth.com/product/lft-spotify-key-upgrade"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-2 border border-green-600 text-green-400 rounded-lg hover:bg-green-600 hover:text-white transition text-sm font-medium"
+              className="inline-block px-6 py-2 border border-gold-600 text-gold-400 rounded-lg hover:bg-gold-600 hover:text-white transition text-sm font-medium"
             >
               Purchase Key
             </a>

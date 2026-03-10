@@ -49,7 +49,7 @@ const GenerateKeys = () => {
                 max="1000"
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-green-500"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-gold-500"
               />
             </div>
             <div>
@@ -59,7 +59,7 @@ const GenerateKeys = () => {
                   type="button"
                   onClick={() => setReusable(false)}
                   className={`px-6 py-2 rounded-lg font-medium transition ${
-                    !reusable ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300'
+                    !reusable ? 'bg-gold-600 text-white' : 'bg-gray-700 text-gray-300'
                   }`}
                 >
                   No
@@ -68,7 +68,7 @@ const GenerateKeys = () => {
                   type="button"
                   onClick={() => setReusable(true)}
                   className={`px-6 py-2 rounded-lg font-medium transition ${
-                    reusable ? 'bg-green-600 text-white' : 'bg-gray-700 text-gray-300'
+                    reusable ? 'bg-gold-600 text-white' : 'bg-gray-700 text-gray-300'
                   }`}
                 >
                   Yes
@@ -81,13 +81,13 @@ const GenerateKeys = () => {
                 type="datetime-local"
                 value={expiresAt}
                 onChange={(e) => setExpiresAt(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-green-500"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-gold-500"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition disabled:opacity-50"
+              className="w-full py-3 bg-gold-600 hover:bg-gold-700 text-white font-semibold rounded-lg transition disabled:opacity-50"
             >
               {loading ? 'Generating...' : `Generate ${quantity} Keys`}
             </button>
@@ -115,7 +115,7 @@ const GenerateKeys = () => {
                   key={key._id}
                   className="flex items-center justify-between px-4 py-2 bg-gray-700/50 rounded-lg"
                 >
-                  <span className="text-green-400 font-mono text-sm">{key.keyCode}</span>
+                  <span className="text-gold-400 font-mono text-sm">{key.keyCode}</span>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(key.keyCode);

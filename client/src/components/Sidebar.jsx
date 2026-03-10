@@ -42,7 +42,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-green-600 text-white'
+                  ? 'bg-gold-600 text-white'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               }`
             }
@@ -59,7 +59,7 @@ const Sidebar = () => {
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
               isActive
-                ? 'bg-green-600 text-white'
+                ? 'bg-gold-600 text-white'
                 : 'text-gray-300 hover:bg-gray-800 hover:text-white'
             }`
           }

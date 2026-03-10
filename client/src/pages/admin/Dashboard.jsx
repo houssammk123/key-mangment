@@ -17,10 +17,10 @@ const StatCard = ({ title, value, icon: Icon, color }) => (
 );
 
 const actionLabels = {
-  KEY_REDEEMED: { label: 'Key Redeemed', color: 'text-green-400' },
+  KEY_REDEEMED: { label: 'Key Redeemed', color: 'text-gold-400' },
   KEYS_GENERATED: { label: 'Keys Generated', color: 'text-blue-400' },
   UNBIND_REQUESTED: { label: 'Unbind Requested', color: 'text-yellow-400' },
-  UNBIND_APPROVED: { label: 'Unbind Approved', color: 'text-green-400' },
+  UNBIND_APPROVED: { label: 'Unbind Approved', color: 'text-gold-400' },
   UNBIND_REJECTED: { label: 'Unbind Rejected', color: 'text-red-400' },
   KEY_DELETED: { label: 'Key Deleted', color: 'text-red-400' },
   KEY_UNBOUND: { label: 'Key Unbound', color: 'text-orange-400' },
@@ -52,7 +52,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatCard title="Total Keys" value={stats.totalKeys} icon={HiOutlineCollection} color="bg-blue-600" />
-        <StatCard title="Active Keys" value={stats.activeKeys} icon={HiOutlineBadgeCheck} color="bg-green-600" />
+        <StatCard title="Active Keys" value={stats.activeKeys} icon={HiOutlineBadgeCheck} color="bg-gold-600" />
         <StatCard title="Stock Available" value={stats.stockAvailable} icon={HiOutlineArchive} color="bg-purple-600" />
         <StatCard title="Unused Keys" value={stats.unusedKeys} icon={HiOutlineKey} color="bg-yellow-600" />
       </div>

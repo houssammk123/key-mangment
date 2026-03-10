@@ -91,7 +91,7 @@ const ManageStock = () => {
         </div>
         <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-green-600 rounded-lg">
+            <div className="p-2 bg-gold-600 rounded-lg">
               <HiOutlineKey className="w-5 h-5 text-white" />
             </div>
             <span className="text-gray-400 text-sm">Available Keys</span>
@@ -123,7 +123,7 @@ const ManageStock = () => {
         <h3 className="text-lg font-semibold text-white mb-4">Stock Usage</h3>
         <div className="w-full bg-gray-700 rounded-full h-4 mb-2">
           <div
-            className="bg-green-500 h-4 rounded-full transition-all"
+            className="bg-gold-500 h-4 rounded-full transition-all"
             style={{ width: `${stock.usagePercent}%` }}
           />
         </div>
@@ -142,12 +142,12 @@ const ManageStock = () => {
             onChange={(e) => setLinksText(e.target.value)}
             placeholder={"https://www.spotify.com/family/join/invite/xxxx\nhttps://www.spotify.com/family/join/invite/yyyy\nhttps://www.spotify.com/family/join/invite/zzzz"}
             rows={5}
-            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:border-green-500 placeholder-gray-500 font-mono"
+            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:border-gold-500 placeholder-gray-500 font-mono"
           />
           <button
             type="submit"
             disabled={addingLinks || !linksText.trim()}
-            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition disabled:opacity-50"
+            className="px-6 py-3 bg-gold-600 hover:bg-gold-700 text-white font-semibold rounded-lg transition disabled:opacity-50"
           >
             {addingLinks ? 'Adding...' : 'Add Invite Links'}
           </button>
@@ -185,7 +185,7 @@ const ManageStock = () => {
                     <td className="p-4 text-sm text-blue-400 font-mono max-w-xs truncate">{link.link}</td>
                     <td className="p-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        link.assigned ? 'bg-green-600 text-white' : 'bg-gray-600 text-gray-200'
+                        link.assigned ? 'bg-gold-600 text-white' : 'bg-gray-600 text-gray-200'
                       }`}>
                         {link.assigned ? 'ASSIGNED' : 'AVAILABLE'}
                       </span>

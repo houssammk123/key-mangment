@@ -5,7 +5,7 @@ import { HiOutlineCheck, HiOutlineX } from 'react-icons/hi';
 
 const statusColors = {
   PENDING: 'bg-yellow-600 text-white',
-  APPROVED: 'bg-green-600 text-white',
+  APPROVED: 'bg-gold-600 text-white',
   REJECTED: 'bg-red-600 text-white',
 };
 
@@ -55,7 +55,7 @@ const UnbindRequests = () => {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:border-green-500"
+            className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:border-gold-500"
           >
             <option value="">All Requests</option>
             <option value="PENDING">Pending</option>
@@ -84,7 +84,7 @@ const UnbindRequests = () => {
               ) : (
                 requests.map((req) => (
                   <tr key={req._id} className="border-b border-gray-700/50 hover:bg-gray-700/30">
-                    <td className="p-4 font-mono text-sm text-green-400">{req.keyCode}</td>
+                    <td className="p-4 font-mono text-sm text-gold-400">{req.keyCode}</td>
                     <td className="p-4 text-sm text-gray-300">{req.email}</td>
                     <td className="p-4 text-sm text-gray-300">{req.reason || '-'}</td>
                     <td className="p-4">
@@ -98,7 +98,7 @@ const UnbindRequests = () => {
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleApprove(req._id)}
-                            className="p-2 text-green-400 hover:bg-gray-700 rounded-lg transition"
+                            className="p-2 text-gold-400 hover:bg-gray-700 rounded-lg transition"
                             title="Approve"
                           >
                             <HiOutlineCheck className="w-4 h-4" />
