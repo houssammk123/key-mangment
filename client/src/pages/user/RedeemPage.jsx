@@ -80,7 +80,7 @@ const RedeemPage = () => {
                   type="text"
                   value={keyCode}
                   onChange={(e) => setKeyCode(e.target.value)}
-                  placeholder="SpotifyHub-XXXX-XXXX"
+                  placeholder="SpotifyGold-XXXX-XXXX"
                   className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition"
                   required
                 />

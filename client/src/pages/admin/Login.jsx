@@ -28,7 +28,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-950">
       <div className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-green-400">SpotifyHub</h1>
+          <h1 className="text-3xl font-bold text-green-400">Spotify Gold</h1>
           <p className="text-gray-400 mt-2">Admin Login</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">

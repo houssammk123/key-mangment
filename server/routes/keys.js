@@ -9,7 +9,7 @@ const router = express.Router();
 function generateKeyCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   const segment = () => Array.from({ length: 4 }, () => chars[crypto.randomInt(chars.length)]).join('');
-  return `SpotifyHub-${segment()}-${segment()}`;
+  return `SpotifyGold-${segment()}-${segment()}`;
 }
 
 // POST /api/keys/generate

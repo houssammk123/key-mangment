@@ -20,7 +20,7 @@ function sendDiscordNotification(keyCode, email) {
         { name: 'Email', value: email, inline: true },
         { name: 'Time', value: new Date().toLocaleString(), inline: false },
       ],
-      footer: { text: 'SpotifyHub Key Management' },
+      footer: { text: 'Spotify Gold Key Management' },
     }],
   });
 
