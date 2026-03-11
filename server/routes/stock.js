@@ -77,6 +77,21 @@ router.get('/invite-links', auth, async (req, res) => {
   }
 });
 
+// PATCH /api/stock/invite-links/:id/unbind - Unbind an assigned link
+router.patch('/invite-links/:id/unbind', auth, async (req, res) => {
+  try {
+    const link = await InviteLink.findByIdAndUpdate(
+      req.params.id,
+      { assigned: false, assignedTo: null, keyCode: null },
+      { new: true }
+    );
+    if (!link) return res.status(404).json({ message: 'Link not found' });
+    res.json({ message: 'Link unbound successfully', link });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // DELETE /api/stock/invite-links/:id
 router.delete('/invite-links/:id', auth, async (req, res) => {
   try {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import API from '../../api/axios';
 import toast from 'react-hot-toast';
-import { HiOutlineArchive, HiOutlineKey, HiOutlineBadgeCheck, HiOutlineRefresh, HiOutlineLink, HiOutlineTrash } from 'react-icons/hi';
+import { HiOutlineArchive, HiOutlineKey, HiOutlineBadgeCheck, HiOutlineRefresh, HiOutlineLink, HiOutlineTrash, HiOutlineLockOpen } from 'react-icons/hi';
 
 const ManageStock = () => {
   const [stock, setStock] = useState(null);
@@ -58,6 +58,17 @@ const ManageStock = () => {
       fetchLinks();
     } catch (err) {
       toast.error('Failed to delete');
+    }
+  };
+
+  const handleUnbindLink = async (id) => {
+    try {
+      await API.patch(`/stock/invite-links/${id}/unbind`);
+      toast.success('Link unbound — now available again');
+      fetchStock();
+      fetchLinks();
+    } catch (err) {
+      toast.error('Failed to unbind');
     }
   };
 
@@ -192,8 +203,16 @@ const ManageStock = () => {
                     </td>
                     <td className="p-4 text-sm text-gray-300">{link.assignedTo || '-'}</td>
                     <td className="p-4 text-sm text-gray-300 font-mono">{link.keyCode || '-'}</td>
-                    <td className="p-4">
-                      {!link.assigned && (
+                    <td className="p-4 flex items-center gap-2">
+                      {link.assigned ? (
+                        <button
+                          onClick={() => handleUnbindLink(link._id)}
+                          className="flex items-center gap-1 px-3 py-1 text-xs text-yellow-400 border border-yellow-600 hover:bg-yellow-600/20 rounded-lg transition"
+                        >
+                          <HiOutlineLockOpen className="w-4 h-4" />
+                          Unbind
+                        </button>
+                      ) : (
                         <button
                           onClick={() => handleDeleteLink(link._id)}
                           className="p-2 text-red-400 hover:bg-gray-700 rounded-lg transition"
