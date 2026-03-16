@@ -19,6 +19,8 @@ const AllKeys = () => {
   const [loading, setLoading] = useState(false);
   const [editingLink, setEditingLink] = useState(null);
   const [linkValue, setLinkValue] = useState('');
+  const [editingName, setEditingName] = useState(null);
+  const [nameValue, setNameValue] = useState('');
 
   const fetchKeys = useCallback(async () => {
     setLoading(true);
@@ -95,6 +97,24 @@ const AllKeys = () => {
     setLinkValue(key.inviteLink || '');
   };
 
+  const handleRename = async (id) => {
+    if (!nameValue.trim()) return;
+    try {
+      await API.patch(`/keys/${id}/rename`, { keyCode: nameValue.trim() });
+      toast.success('Key renamed');
+      setEditingName(null);
+      setNameValue('');
+      fetchKeys();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Rename failed');
+    }
+  };
+
+  const startEditName = (key) => {
+    setEditingName(key._id);
+    setNameValue(key.keyCode);
+  };
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
@@ -158,7 +178,29 @@ const AllKeys = () => {
               ) : (
                 keys.map((key) => (
                   <tr key={key._id} className="border-b border-gray-700/50 hover:bg-gray-700/30">
-                    <td className="p-4 font-mono text-sm text-gold-400">{key.keyCode}</td>
+                    <td className="p-4 font-mono text-sm">
+                      {editingName === key._id ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={nameValue}
+                            onChange={(e) => setNameValue(e.target.value)}
+                            className="w-44 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-gold-400 text-sm font-mono focus:outline-none focus:border-gold-500"
+                            autoFocus
+                            onKeyDown={(e) => { if (e.key === 'Enter') handleRename(key._id); if (e.key === 'Escape') setEditingName(null); }}
+                          />
+                          <button onClick={() => handleRename(key._id)} className="text-gold-400 hover:text-gold-300 text-xs font-medium">Save</button>
+                          <button onClick={() => setEditingName(null)} className="text-gray-500 hover:text-gray-300 text-xs">Cancel</button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 group">
+                          <span className="text-gold-400">{key.keyCode}</span>
+                          <button onClick={() => startEditName(key)} className="p-1 text-gray-600 group-hover:text-gray-400 hover:text-gray-300">
+                            <HiOutlinePencil className="w-3 h-3" />
+                          </button>
+                        </div>
+                      )}
+                    </td>
                     <td className="p-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[key.status]}`}>
                         {key.status}
@@ -246,9 +288,30 @@ const AllKeys = () => {
           ) : (
             keys.map((key) => (
               <div key={key._id} className="p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-sm text-gold-400">{key.keyCode}</span>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[key.status]}`}>
+                <div className="flex items-center justify-between gap-2">
+                  {editingName === key._id ? (
+                    <div className="flex-1 space-y-2">
+                      <input
+                        type="text"
+                        value={nameValue}
+                        onChange={(e) => setNameValue(e.target.value)}
+                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-gold-400 text-sm font-mono focus:outline-none focus:border-gold-500"
+                        autoFocus
+                      />
+                      <div className="flex gap-2">
+                        <button onClick={() => handleRename(key._id)} className="px-3 py-1 bg-gold-600 text-white rounded text-xs">Save</button>
+                        <button onClick={() => setEditingName(null)} className="px-3 py-1 bg-gray-700 text-gray-300 rounded text-xs">Cancel</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 min-w-0">
+                      <span className="font-mono text-sm text-gold-400 truncate">{key.keyCode}</span>
+                      <button onClick={() => startEditName(key)} className="p-1 text-gray-500 hover:text-gray-300 shrink-0">
+                        <HiOutlinePencil className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+                  <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[key.status]}`}>
                     {key.status}
                   </span>
                 </div>

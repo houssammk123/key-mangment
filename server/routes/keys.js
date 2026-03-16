@@ -126,6 +126,27 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
+// PATCH /api/keys/:id/rename - Rename a key code
+router.patch('/:id/rename', auth, async (req, res) => {
+  try {
+    const { keyCode } = req.body;
+    if (!keyCode || !keyCode.trim()) return res.status(400).json({ message: 'Key code is required' });
+    const existing = await Key.findOne({ keyCode: keyCode.trim() });
+    if (existing && existing._id.toString() !== req.params.id) {
+      return res.status(400).json({ message: 'This key code already exists' });
+    }
+    const key = await Key.findByIdAndUpdate(
+      req.params.id,
+      { keyCode: keyCode.trim() },
+      { new: true }
+    );
+    if (!key) return res.status(404).json({ message: 'Key not found' });
+    res.json({ message: 'Key renamed', key });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // PATCH /api/keys/:id/link - Set invite link on a key
 router.patch('/:id/link', auth, async (req, res) => {
   try {
