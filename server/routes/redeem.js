@@ -7,16 +7,30 @@ const Log = require('../models/Log');
 const InviteLink = require('../models/InviteLink');
 const router = express.Router();
 
+function maskKey(keyCode) {
+  // SpotifyGold-ABCD-EFGH → SpotifyGold-AB**-****
+  const parts = keyCode.split('-');
+  if (parts.length >= 3) {
+    const prefix = parts.slice(0, -2).join('-'); // "SpotifyGold"
+    const part1 = parts[parts.length - 2]; // "ABCD"
+    const masked1 = part1.substring(0, 2) + '**';
+    return `${prefix}-${masked1}-****`;
+  }
+  return keyCode.substring(0, 14) + '****';
+}
+
 function sendDiscordNotification(keyCode, email) {
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
   if (!webhookUrl || webhookUrl === 'your-discord-webhook-url-here') return;
 
+  const maskedKey = maskKey(keyCode);
+
   const payload = JSON.stringify({
     embeds: [{
       title: 'New Key Redeemed',
-      color: 0x1DB954,
+      color: 0xD4A017,
       fields: [
-        { name: 'Key', value: `\`${keyCode}\``, inline: true },
+        { name: 'Key', value: `\`${maskedKey}\``, inline: true },
         { name: 'Email', value: email, inline: true },
         { name: 'Time', value: new Date().toLocaleString(), inline: false },
       ],
@@ -66,20 +80,8 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'This key has expired' });
     }
 
-    // Check cooldown (1 hour between redemptions per email)
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (user && user.lastRedeemTime) {
-      const cooldown = 60 * 60 * 1000; // 1 hour
-      const timeSinceLastRedeem = Date.now() - user.lastRedeemTime.getTime();
-      if (timeSinceLastRedeem < cooldown) {
-        const remaining = Math.ceil((cooldown - timeSinceLastRedeem) / 60000);
-        return res.status(429).json({
-          message: `Please wait ${remaining} minutes before redeeming again`,
-        });
-      }
-    }
-
     // Create or update user
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (user) {
       user.lastRedeemTime = new Date();
       await user.save();
