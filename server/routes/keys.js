@@ -71,12 +71,14 @@ router.get('/', auth, async (req, res) => {
       .limit(parseInt(limit))
       .lean();
 
-    // Attach invite links to keys
-    const keyCodes = keys.map(k => k.keyCode);
-    const links = await InviteLink.find({ keyCode: { $in: keyCodes } }).lean();
-    const linkMap = {};
-    links.forEach(l => { linkMap[l.keyCode] = l.link; });
-    keys.forEach(k => { k.inviteLink = linkMap[k.keyCode] || null; });
+    // Attach pool invite links to keys that don't have their own
+    const keyCodes = keys.filter(k => !k.inviteLink).map(k => k.keyCode);
+    if (keyCodes.length > 0) {
+      const links = await InviteLink.find({ keyCode: { $in: keyCodes } }).lean();
+      const linkMap = {};
+      links.forEach(l => { linkMap[l.keyCode] = l.link; });
+      keys.forEach(k => { if (!k.inviteLink) k.inviteLink = linkMap[k.keyCode] || null; });
+    }
 
     res.json({
       keys,
@@ -119,6 +121,22 @@ router.delete('/:id', auth, async (req, res) => {
     });
 
     res.json({ message: 'Key deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// PATCH /api/keys/:id/link - Set invite link on a key
+router.patch('/:id/link', auth, async (req, res) => {
+  try {
+    const { inviteLink } = req.body;
+    const key = await Key.findByIdAndUpdate(
+      req.params.id,
+      { inviteLink: inviteLink || null },
+      { new: true }
+    );
+    if (!key) return res.status(404).json({ message: 'Key not found' });
+    res.json({ message: 'Link updated', key });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

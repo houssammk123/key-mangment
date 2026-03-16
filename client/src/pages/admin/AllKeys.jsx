@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import API from '../../api/axios';
 import toast from 'react-hot-toast';
-import { HiOutlineSearch, HiOutlineDownload, HiOutlineTrash, HiOutlineLockOpen, HiOutlineExternalLink } from 'react-icons/hi';
+import { HiOutlineSearch, HiOutlineDownload, HiOutlineTrash, HiOutlineLockOpen, HiOutlineExternalLink, HiOutlineLink, HiOutlinePencil } from 'react-icons/hi';
 
 const statusColors = {
   UNUSED: 'bg-gray-600 text-gray-200',
@@ -17,6 +17,8 @@ const AllKeys = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [loading, setLoading] = useState(false);
+  const [editingLink, setEditingLink] = useState(null);
+  const [linkValue, setLinkValue] = useState('');
 
   const fetchKeys = useCallback(async () => {
     setLoading(true);
@@ -74,6 +76,23 @@ const AllKeys = () => {
     } catch (err) {
       toast.error('Unbind failed');
     }
+  };
+
+  const handleSetLink = async (id) => {
+    try {
+      await API.patch(`/keys/${id}/link`, { inviteLink: linkValue.trim() });
+      toast.success(linkValue.trim() ? 'Link saved' : 'Link removed');
+      setEditingLink(null);
+      setLinkValue('');
+      fetchKeys();
+    } catch (err) {
+      toast.error('Failed to save link');
+    }
+  };
+
+  const startEditLink = (key) => {
+    setEditingLink(key._id);
+    setLinkValue(key.inviteLink || '');
   };
 
   return (
@@ -147,19 +166,44 @@ const AllKeys = () => {
                     </td>
                     <td className="p-4 text-sm text-gray-300">{key.boundEmail || '-'}</td>
                     <td className="p-4 text-sm">
-                      {key.inviteLink ? (
-                        <a
-                          href={key.inviteLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition"
-                          title={key.inviteLink}
-                        >
-                          <HiOutlineExternalLink className="w-4 h-4" />
-                          <span className="max-w-[120px] truncate">{key.inviteLink.split('/').pop()}</span>
-                        </a>
+                      {editingLink === key._id ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="url"
+                            value={linkValue}
+                            onChange={(e) => setLinkValue(e.target.value)}
+                            placeholder="https://spotify.com/family/join/..."
+                            className="w-48 px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs focus:outline-none focus:border-gold-500"
+                            autoFocus
+                            onKeyDown={(e) => { if (e.key === 'Enter') handleSetLink(key._id); if (e.key === 'Escape') setEditingLink(null); }}
+                          />
+                          <button onClick={() => handleSetLink(key._id)} className="text-gold-400 hover:text-gold-300 text-xs font-medium">Save</button>
+                          <button onClick={() => setEditingLink(null)} className="text-gray-500 hover:text-gray-300 text-xs">Cancel</button>
+                        </div>
+                      ) : key.inviteLink ? (
+                        <div className="flex items-center gap-1">
+                          <a
+                            href={key.inviteLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition"
+                            title={key.inviteLink}
+                          >
+                            <HiOutlineExternalLink className="w-4 h-4" />
+                            <span className="max-w-[100px] truncate">{key.inviteLink.split('/').pop()}</span>
+                          </a>
+                          <button onClick={() => startEditLink(key)} className="p-1 text-gray-500 hover:text-gray-300">
+                            <HiOutlinePencil className="w-3 h-3" />
+                          </button>
+                        </div>
                       ) : (
-                        <span className="text-gray-500">-</span>
+                        <button
+                          onClick={() => startEditLink(key)}
+                          className="flex items-center gap-1 text-gray-500 hover:text-gold-400 transition text-xs"
+                        >
+                          <HiOutlineLink className="w-4 h-4" />
+                          Set link
+                        </button>
                       )}
                     </td>
                     <td className="p-4 text-sm text-gray-400">{new Date(key.createdAt).toLocaleDateString()}</td>
@@ -211,16 +255,44 @@ const AllKeys = () => {
                 {key.boundEmail && (
                   <p className="text-sm text-gray-300">{key.boundEmail}</p>
                 )}
-                {key.inviteLink && (
-                  <a
-                    href={key.inviteLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-blue-400 text-sm"
+                {editingLink === key._id ? (
+                  <div className="space-y-2">
+                    <input
+                      type="url"
+                      value={linkValue}
+                      onChange={(e) => setLinkValue(e.target.value)}
+                      placeholder="https://spotify.com/family/join/..."
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:border-gold-500"
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <button onClick={() => handleSetLink(key._id)} className="px-3 py-1 bg-gold-600 text-white rounded text-xs">Save</button>
+                      <button onClick={() => setEditingLink(null)} className="px-3 py-1 bg-gray-700 text-gray-300 rounded text-xs">Cancel</button>
+                    </div>
+                  </div>
+                ) : key.inviteLink ? (
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={key.inviteLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-blue-400 text-sm truncate"
+                    >
+                      <HiOutlineExternalLink className="w-3 h-3 shrink-0" />
+                      <span className="truncate">{key.inviteLink.split('/').pop()}</span>
+                    </a>
+                    <button onClick={() => startEditLink(key)} className="p-1 text-gray-500 hover:text-gray-300 shrink-0">
+                      <HiOutlinePencil className="w-3 h-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => startEditLink(key)}
+                    className="flex items-center gap-1 text-gray-500 hover:text-gold-400 transition text-xs"
                   >
-                    <HiOutlineExternalLink className="w-3 h-3" />
-                    <span className="truncate">{key.inviteLink.split('/').pop()}</span>
-                  </a>
+                    <HiOutlineLink className="w-4 h-4" />
+                    Set link
+                  </button>
                 )}
                 <div className="flex items-center justify-between pt-1">
                   <span className="text-xs text-gray-500">

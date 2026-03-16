@@ -28,6 +28,10 @@ const keySchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  inviteLink: {
+    type: String,
+    default: null,
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Key', keySchema);

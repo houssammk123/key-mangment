@@ -106,15 +106,17 @@ router.post('/', async (req, res) => {
       email: email.toLowerCase(),
     });
 
-    // Assign an invite link from the pool
-    let inviteLink = null;
-    const available = await InviteLink.findOne({ assigned: false });
-    if (available) {
-      available.assigned = true;
-      available.assignedTo = email.toLowerCase();
-      available.keyCode = key.keyCode;
-      await available.save();
-      inviteLink = available.link;
+    // Use the key's own invite link if set, otherwise assign from the pool
+    let inviteLink = key.inviteLink || null;
+    if (!inviteLink) {
+      const available = await InviteLink.findOne({ assigned: false });
+      if (available) {
+        available.assigned = true;
+        available.assignedTo = email.toLowerCase();
+        available.keyCode = key.keyCode;
+        await available.save();
+        inviteLink = available.link;
+      }
     }
 
     // Notify Discord
