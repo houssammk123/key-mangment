@@ -58,10 +58,12 @@ const Dashboard = () => {
       </div>
 
       <div className="bg-gray-800 rounded-xl border border-gray-700">
-        <div className="p-6 border-b border-gray-700">
+        <div className="p-4 sm:p-6 border-b border-gray-700">
           <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Desktop table */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="text-gray-400 text-sm border-b border-gray-700">
@@ -90,6 +92,26 @@ const Dashboard = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="sm:hidden divide-y divide-gray-700/50">
+          {activity.map((log) => {
+            const info = actionLabels[log.action] || { label: log.action, color: 'text-gray-400' };
+            return (
+              <div key={log._id} className="p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className={`text-sm font-medium ${info.color}`}>{info.label}</span>
+                  <span className="text-xs text-gray-500">{new Date(log.timestamp).toLocaleString()}</span>
+                </div>
+                <p className="text-sm text-gray-300 font-mono truncate">{log.keyCode || log.details || '-'}</p>
+                {log.email && <p className="text-sm text-gray-400">{log.email}</p>}
+              </div>
+            );
+          })}
+          {activity.length === 0 && (
+            <p className="p-8 text-center text-gray-500">No activity yet</p>
+          )}
         </div>
       </div>
     </div>

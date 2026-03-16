@@ -78,11 +78,11 @@ const AllKeys = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <h2 className="text-2xl font-bold text-white">All Keys</h2>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white rounded-lg text-sm transition"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white rounded-lg text-sm transition"
         >
           <HiOutlineDownload className="w-4 h-4" />
           Export CSV
@@ -90,7 +90,7 @@ const AllKeys = () => {
       </div>
 
       <div className="bg-gray-800 rounded-xl border border-gray-700">
-        <div className="p-4 border-b border-gray-700 flex flex-col sm:flex-row gap-4">
+        <div className="p-4 border-b border-gray-700 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
@@ -113,7 +113,8 @@ const AllKeys = () => {
           </select>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="text-gray-400 text-sm border-b border-gray-700">
@@ -192,8 +193,64 @@ const AllKeys = () => {
           </table>
         </div>
 
+        {/* Mobile cards */}
+        <div className="md:hidden divide-y divide-gray-700/50">
+          {loading ? (
+            <p className="p-8 text-center text-gray-500">Loading...</p>
+          ) : keys.length === 0 ? (
+            <p className="p-8 text-center text-gray-500">No keys found</p>
+          ) : (
+            keys.map((key) => (
+              <div key={key._id} className="p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-sm text-gold-400">{key.keyCode}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[key.status]}`}>
+                    {key.status}
+                  </span>
+                </div>
+                {key.boundEmail && (
+                  <p className="text-sm text-gray-300">{key.boundEmail}</p>
+                )}
+                {key.inviteLink && (
+                  <a
+                    href={key.inviteLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-blue-400 text-sm"
+                  >
+                    <HiOutlineExternalLink className="w-3 h-3" />
+                    <span className="truncate">{key.inviteLink.split('/').pop()}</span>
+                  </a>
+                )}
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-xs text-gray-500">
+                    {new Date(key.createdAt).toLocaleDateString()}
+                    {key.redeemedAt && ` · Redeemed ${new Date(key.redeemedAt).toLocaleDateString()}`}
+                  </span>
+                  <div className="flex gap-2">
+                    {key.status === 'ACTIVE' && (
+                      <button
+                        onClick={() => handleUnbind(key._id)}
+                        className="p-1.5 text-yellow-400 hover:bg-gray-700 rounded-lg transition"
+                      >
+                        <HiOutlineLockOpen className="w-4 h-4" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDelete(key._id)}
+                      className="p-1.5 text-red-400 hover:bg-gray-700 rounded-lg transition"
+                    >
+                      <HiOutlineTrash className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
         {pages > 1 && (
-          <div className="p-4 border-t border-gray-700 flex items-center justify-between">
+          <div className="p-4 border-t border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-sm text-gray-400">
               Showing {keys.length} of {total} keys
             </p>
